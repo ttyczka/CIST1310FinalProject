@@ -17,24 +17,33 @@ Bootstrap(app)
 
 @app.route('/')
 def	hello_world():
-    return	'Hello!'
+    return	render_template("Login.html")
 
 @app.route("/Login")
 def	Login_page():
     return	render_template("Login.html")
 
+@app.route("/LoginInput", methods=["POST"])
+def	LoginInputted():
+    if  request.method == "POST":
+        UserName = request.form ["UserName"]
+        if UserName== "Employer123":
+            return	render_template("EmployerPageOptions.html")
+        else:
+            return	render_template("EmployeeLogTime.html")
+
+
+#do i still need this?
 @app.route("/EmployerPageOptions")
 def	EmployerPageOptions_page():
     return	render_template("EmployerPageOptions.html")
-
-
 
 @app.route("/NewUserInfo")
 def new_user():
     return render_template("NewUserInfo.html")
     
-@app.route("/Addnewuser", methods=["POST"])
-def Addnewuser():
+@app.route("/addnewusers", methods=["POST"])
+def newusers():
     if request.method == "POST":
         EmployeeID = request.form ["EmployeeID"]
         UserName = request.form ["UserName"]
@@ -54,7 +63,7 @@ def Addnewuser():
             cur.execute("SELECT * FROM Users")
 
             rows = cur.fetchall()
-        return render_template("EmployeeContacts.html",rows = rows)
+        return render_template("Login.html")
 
 @app.route("/EmployeeContacts")
 def EmployeeContacts_data():
@@ -62,7 +71,7 @@ def EmployeeContacts_data():
     con.row_factory = sql.Row 
 
     cur = con.cursor()
-    cur.execute("SELECT * FROM Users")
+    cur.execute("SELECT EmployeeID, UserName, FirstName, LastName, Email, Phone FROM Users")
 
     rows = cur.fetchall()
     return render_template("EmployeeContacts.html", rows = rows)
@@ -97,8 +106,9 @@ def timelogged():
         with sql.connect("Employeedatabase.db") as con:
             cur = con.cursor()
             cur.execute("INSERT INTO Time_Sheet (SheetID, EmployeeID, Monday_Hours, Tuesday_Hours, Wednesday_Hours, Thursday_Hours, Friday_Hours, Total_Hours) VALUES (?, ?, ?, ?, ?, ?, ?,?)", [SheetID, EmployeeID, Monday_Hours,Tuesday_Hours, Wednesday_Hours, Thursday_Hours, Friday_Hours, Total_Hours] )
-            con.commit()
-    return render_template("EmployeeTimeSheets.html")
+        con.commit()
+    return render_template("Login.html")
+
 
 if	__name__	== "__main__":
     app.run()
