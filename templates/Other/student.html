@@ -1,0 +1,35 @@
+
+{% extends "bootstrap/base.html" %}
+
+    {%block title %}Add New Student{% endblock %}
+
+    {% block content %}
+
+    <div class="container justify-content-center col-md-12"></div>
+        <form action = "{{url_for('addrec')}}" method = "POST">
+            <div class="form-group row">
+                <h3>Student Information</h3>
+                Name<br>
+                <input type="text" name="nm"/><br>
+
+            </div>
+
+            <div class="form-group row">
+                Address<br>
+                <input type="text" name="add"/><br>
+            </div>
+
+            <div class="form-group row">
+                City<br>
+                <input type="text" name="cty"/><br>
+
+            </div>
+
+            <div class="form-group row">
+                <input class= "btn btn-success" type="submit" name="Submit"/>
+            </div>
+
+        </form>
+        
+    </div>
+{% endblock %}
